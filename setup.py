@@ -8,7 +8,7 @@
 #
 #       Creation Date : Mon 08 Apr 2019 07:00:40 PM EEST (19:00)
 #
-#       Last Modified : Mon 06 May 2019 09:24:17 PM EEST (21:24)
+#       Last Modified : Mon 06 May 2019 10:38:34 PM EEST (22:38)
 #
 # ==============================================================================
 
@@ -22,7 +22,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name="django-quenv",
-    version="0.1",
+    version="0.1.1",
     python_requires=">=3.5",
     description=(
         "A django application that gathers the names of all installed packages "
@@ -35,7 +35,7 @@ setup(
     author="George Tantiras",
     license="BSD 3-Clause License",
     packages=find_packages(exclude=("tests",)),
-    include_package_data=False,
+    include_package_data=True,
     install_requires=["setuptools", "tqdm", "Django"],
     zip_safe=False,
     classifiers=[
