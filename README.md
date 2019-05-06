@@ -28,7 +28,7 @@ pip install django-quenv
 ```
 INSTALLED_APPS = [
     ...,
-    'quenv.apps.QuenvConfig',
+    'quenv',
 ]
 ```
 
