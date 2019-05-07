@@ -8,7 +8,7 @@
 #
 #       Creation Date : Sun 21 Apr 2019 01:18:22 PM EEST (13:18)
 #
-#       Last Modified : Mon 06 May 2019 08:43:29 PM EEST (20:43)
+#       Last Modified : Tue 07 May 2019 12:27:15 PM EEST (12:27)
 #
 # ==============================================================================
 
@@ -23,9 +23,10 @@ from datetime import date
 from django.conf import settings
 from django.core.management import call_command
 from itertools import compress
-from quenv.models import Date, Info, IncrementalChanges
 from pkg_resources import get_distribution, working_set
+from quenv.models import Date, Info, IncrementalChanges
 from tqdm import tqdm
+from urllib.parse import urlparse
 
 
 class Package:
@@ -64,29 +65,29 @@ class Package:
                         return each_lang
         return {}
 
-    def is_github_url(self, line):
-        '''
-        The relevant line contains a "github.com" string
-        '''
-        return any(
-            (
-                all((line.startswith('Project-URL: Source'), 'github.com' in line)),
-                all((line.startswith('Home-page'), 'github.com' in line)),
-            )
-        )
-
     def lgtm_query(self, line):
         '''
         Check if a github url is present in order to query the lgtm api.
         It is possible to extend the reasons for starting a lgtm query.
         '''
-        url_identifier = ''
+        url = urlparse(line[line.find('https://'):])
+        whitelist = (
+            'github.com',
+        )
+        if all(
+            (
+                any(
+                    (
+                        line.startswith('Project-URL: Source'),
+                        line.startswith('Home-page'),
+                    )
+                ),
+                url.netloc in whitelist,
+            )
+        ):
+            return self.get_lgtm_result('g{0}'.format(url.path))
 
-        if self.is_github_url(line):
-            github_uri = line[line.find('github.com'):].split('/')[1:]
-            url_identifier = 'g/{0}'.format(os.path.join(*github_uri))
-
-        return self.get_lgtm_result(url_identifier)
+        return self.get_lgtm_result(None)
 
     def filters(self, line):
         '''
@@ -98,7 +99,7 @@ class Package:
             'licenses': compress(
                 (
                     line[9:],
-                    line[23:].replace('OSI Approved :: ', ''),
+                    line[23:].replace('OSI Approved', '').replace(' :: ', ''),
                 ),
                 (
                     line.startswith('License:'),
@@ -120,7 +121,7 @@ class Package:
 
         for each in self.get_pkg_details():
             lgtm.update(each['lgtm'])
-            classifiers.extend(each['licenses'])
+            classifiers.extend(filter(None, each['licenses']))
 
         self.result.description_license = classifiers.pop(0)
         self.result.classifier_licenses = classifiers
@@ -198,7 +199,7 @@ class Dump:
                 "lines": int(lines),
                 "grade_key": [str(grade).strip()],
                 "date_key": [date.today().strftime("%Y-%m-%d")],
-                "licenses_keys": [[str(l.strip())] for l in licenses.split(",")] if licenses else [],
+                "licenses_keys": [[str(l.strip())] for l in licenses] if licenses else [],
             }
         }
 
@@ -231,7 +232,7 @@ class Dump:
                 package_info.description_license,
                 package_info.lgtm.get('lines', 0),
                 package_info.lgtm.get('grade', 0),
-                ', '.join(package_info.classifier_licenses)
+                tuple(package_info.classifier_licenses),
             )
         )
 
@@ -262,7 +263,8 @@ class Dump:
                 + self.data[self.get_info_obj]
         )
 
-    def update_db(self):
+    def update_db(self, fixture_fullpath):
+        call_command('loaddata', fixture_fullpath)
         dates = Date.objects.all().order_by('-check_date')[:2]
         difference_collection = (
             Info.objects.filter(date_key__in=dates)
@@ -319,23 +321,17 @@ class Dump:
                 ])
 
     def dump(self):
-        path = getattr(settings, 'QUENV_PATH', '.')
+        fixture_fullpath = os.path.join(
+            getattr(settings, 'QUENV_PATH', ''),
+            '{0}.json'.format(
+                date.today().strftime('%Y-%m-%d'),
+            ),
+        )
         data = self.get_result(
             map(self.create_package, self.environment_packages)
         )
-        with open(
-            '{0}.json'.format(
-                os.path.join(path, date.today().strftime('%Y-%m-%d'))
-            ),
-            'x',
-        ) as f:
-            json.dump(data, f, indent=4)
-        call_command(
-            'loaddata',
-            '{0}.json'.format(
-                os.path.join(path, date.today().strftime('%Y-%m-%d')),
-                format=json
-            )
-        )
+        with open(fixture_fullpath, 'x') as f:
+            json.dump(data, f, indent=2)
+
         if getattr(settings, 'QUENV_UPDATE_DB', True):
-            self.update_db()
+            self.update_db(fixture_fullpath)
