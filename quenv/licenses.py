@@ -8,7 +8,7 @@
 #
 #       Creation Date : Sun 21 Apr 2019 01:18:22 PM EEST (13:18)
 #
-#       Last Modified : Tue 07 May 2019 12:27:15 PM EEST (12:27)
+#       Last Modified : Tue 07 May 2019 04:00:36 PM EEST (16:00)
 #
 # ==============================================================================
 
@@ -146,44 +146,44 @@ class Dump:
             self.raw_data[self.get_grade_obj].add((k, v))
         self.raw_data[self.get_license_obj].add("UNKNOWN")
 
-    def get_environment_obj(self, environment):
+    @staticmethod
+    def get_environment_obj(environment):
         return {
             "model": "quenv.environment",
             "fields": {"environment_name": str(environment).strip()},
         }
 
-    def get_license_obj(self, license):
+    @staticmethod
+    def get_license_obj(license_name):
         return {
             "model": "quenv.license",
-            "fields": {"license_name": str(license).strip()},
+            "fields": {"license_name": str(license_name).strip()},
         }
 
-    def get_package_obj(self, package):
+    @staticmethod
+    def get_package_obj(package):
         return {
             "model": "quenv.package",
             "fields": {"package_name": str(package).strip()},
         }
 
-    def get_date_obj(self):
+    @staticmethod
+    def get_date_obj():
         return {
             "model": "quenv.date",
             "fields": {"check_date": date.today().strftime("%Y-%m-%d")},
         }
 
-    def get_grade_obj(self, grade, ordering=10000):
+    @staticmethod
+    def get_grade_obj(grade, ordering=10000):
         return {
             "model": "quenv.grade",
             "fields": {"level": str(grade).strip(), "ordering": int(ordering)},
         }
 
+    @staticmethod
     def get_info_obj(
-        self,
-        environment,
-        package,
-        description="UNKNOWN",
-        lines=0,
-        grade="0",
-        licenses=None,
+        environment, package, description="UNKNOWN", lines=0, grade="0", licenses=None
     ):
         return {
             "model": "quenv.info",
@@ -258,7 +258,8 @@ class Dump:
             + self.data[self.get_info_obj]
         )
 
-    def update_db(self, fixture_fullpath):
+    @staticmethod
+    def update_db(fixture_fullpath):
         call_command("loaddata", fixture_fullpath)
         dates = Date.objects.all().order_by("-check_date")[:2]
         difference_collection = Info.objects.filter(date_key__in=dates).values_list(

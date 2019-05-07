@@ -8,7 +8,7 @@
 #
 #       Creation Date : Sat 20 Apr 2019 08:39:37 PM EEST (20:39)
 #
-#       Last Modified : Mon 06 May 2019 08:34:04 PM EEST (20:34)
+#       Last Modified : Tue 07 May 2019 03:52:11 PM EEST (15:52)
 #
 # ==============================================================================
 
@@ -38,15 +38,6 @@ class LicenseListFilter(admin.SimpleListFilter):
             )
             return queryset.filter(search_terms).distinct()
 
-    def has_add_permission(self, request):
-        return False
-
-    def has_change_permission(self, request, obj=None):
-        return False
-
-    def has_delete_permission(self, request, obj=None):
-        return False
-
 
 @admin.register(models.Info)
 class InfoAdmin(admin.ModelAdmin):
@@ -61,12 +52,14 @@ class InfoAdmin(admin.ModelAdmin):
         "changes_link",
     )
 
-    def packages(self, obj):
+    @staticmethod
+    def packages(obj):
         return obj.package_key.package_name
 
     packages.admin_order_field = "package_key__package_name"
 
-    def licenses_link(self, obj):
+    @staticmethod
+    def licenses_link(obj):
         url = reverse("admin:quenv_license_changelist")
         return format_html(
             "<a href={0}?packages__id={1}>{2}</a>", url, obj.id, obj.license_description
@@ -75,12 +68,14 @@ class InfoAdmin(admin.ModelAdmin):
     licenses_link.short_description = _("License Description")
     licenses_link.admin_order_field = "license_description__license_name"
 
-    def grade_key_level(self, obj):
+    @staticmethod
+    def grade_key_level(obj):
         return obj.grade_key.level
 
     grade_key_level.admin_order_field = "grade_key__ordering"
 
-    def changes_link(self, obj):
+    @staticmethod
+    def changes_link(obj):
         url = reverse("admin:quenv_incrementalchanges_changelist")
         return format_html(
             "<a href={0}?date_key__check_date__day={1}&date_key__check_date__month={2}&date_key__check_date__year={3}>Related Changes</a>",
@@ -92,13 +87,16 @@ class InfoAdmin(admin.ModelAdmin):
 
     changes_link.short_description = _("Related Changes")
 
-    def has_add_permission(self, request):
+    @staticmethod
+    def has_add_permission(request):
         return False
 
-    def has_change_permission(self, request, obj=None):
+    @staticmethod
+    def has_change_permission(request, obj=None):
         return False
 
-    def has_delete_permission(self, request, obj=None):
+    @staticmethod
+    def has_delete_permission(request, obj=None):
         return False
 
 
@@ -106,7 +104,8 @@ class InfoAdmin(admin.ModelAdmin):
 class LicenseAdmin(admin.ModelAdmin):
     list_display = ("license_name", "packages_link")
 
-    def packages_link(self, obj):
+    @staticmethod
+    def packages_link(obj):
         url = reverse("admin:quenv_info_changelist")
         return format_html(
             "<a href={0}?license={1}>Related Packages</a>",
@@ -116,13 +115,16 @@ class LicenseAdmin(admin.ModelAdmin):
 
     packages_link.short_description = _("Related Packages")
 
-    def has_add_permission(self, request):
+    @staticmethod
+    def has_add_permission(request):
         return False
 
-    def has_change_permission(self, request, obj=None):
+    @staticmethod
+    def has_change_permission(request, obj=None):
         return False
 
-    def has_delete_permission(self, request, obj=None):
+    @staticmethod
+    def has_delete_permission(request, obj=None):
         return False
 
 
@@ -130,25 +132,31 @@ class LicenseAdmin(admin.ModelAdmin):
 class PackageAdmin(admin.ModelAdmin):
     list_display = ("package_name",)
 
-    def has_add_permission(self, request):
+    @staticmethod
+    def has_add_permission(request):
         return False
 
-    def has_change_permission(self, request, obj=None):
+    @staticmethod
+    def has_change_permission(request, obj=None):
         return False
 
-    def has_delete_permission(self, request, obj=None):
+    @staticmethod
+    def has_delete_permission(request, obj=None):
         return False
 
 
 @admin.register(models.Environment)
 class EnvironmentAdmin(admin.ModelAdmin):
-    def has_add_permission(self, request):
+    @staticmethod
+    def has_add_permission(request):
         return False
 
-    def has_change_permission(self, request, obj=None):
+    @staticmethod
+    def has_change_permission(request, obj=None):
         return False
 
-    def has_delete_permission(self, request, obj=None):
+    @staticmethod
+    def has_delete_permission(request, obj=None):
         return False
 
 
@@ -156,7 +164,8 @@ class EnvironmentAdmin(admin.ModelAdmin):
 class DateAdmin(admin.ModelAdmin):
     list_display = ("check_date", "packages_link", "changes_link")
 
-    def packages_link(self, obj):
+    @staticmethod
+    def packages_link(obj):
         url = reverse("admin:quenv_info_changelist")
         return format_html(
             "<a href={0}?date_key__check_date__day={1}&date_key__check_date__month={2}&date_key__check_date__year={3}>Related Packages</a>",
@@ -168,7 +177,8 @@ class DateAdmin(admin.ModelAdmin):
 
     packages_link.short_description = _("Related Packages")
 
-    def changes_link(self, obj):
+    @staticmethod
+    def changes_link(obj):
         url = reverse("admin:quenv_incrementalchanges_changelist")
         return format_html(
             "<a href={0}?date_key__check_date__day={1}&date_key__check_date__month={2}&date_key__check_date__year={3}>Related Changes</a>",
@@ -180,13 +190,16 @@ class DateAdmin(admin.ModelAdmin):
 
     changes_link.short_description = _("Related Changes")
 
-    def has_add_permission(self, request):
+    @staticmethod
+    def has_add_permission(request):
         return False
 
-    def has_change_permission(self, request, obj=None):
+    @staticmethod
+    def has_change_permission(request, obj=None):
         return False
 
-    def has_delete_permission(self, request, obj=None):
+    @staticmethod
+    def has_delete_permission(request, obj=None):
         return False
 
 
@@ -194,13 +207,16 @@ class DateAdmin(admin.ModelAdmin):
 class GradeAdmin(admin.ModelAdmin):
     ordering = ["ordering"]
 
-    def has_add_permission(self, request):
+    @staticmethod
+    def has_add_permission(request):
         return False
 
-    def has_change_permission(self, request, obj=None):
+    @staticmethod
+    def has_change_permission(request, obj=None):
         return False
 
-    def has_delete_permission(self, request, obj=None):
+    @staticmethod
+    def has_delete_permission(request, obj=None):
         return False
 
 
@@ -215,7 +231,8 @@ class IncrementalChangesAdmin(admin.ModelAdmin):
         "packages_link",
     )
 
-    def packages_link(self, obj):
+    @staticmethod
+    def packages_link(obj):
         url = reverse("admin:quenv_info_changelist")
         return format_html(
             "<a href={0}?date_key__check_date__day={1}&date_key__check_date__month={2}&date_key__check_date__year={3}>Related Installation</a>",
@@ -227,11 +244,14 @@ class IncrementalChangesAdmin(admin.ModelAdmin):
 
     packages_link.short_description = _("Installation Packages")
 
-    def has_add_permission(self, request):
+    @staticmethod
+    def has_add_permission(request):
         return False
 
-    def has_change_permission(self, request, obj=None):
+    @staticmethod
+    def has_change_permission(request, obj=None):
         return False
 
-    def has_delete_permission(self, request, obj=None):
+    @staticmethod
+    def has_delete_permission(request, obj=None):
         return False
