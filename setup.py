@@ -8,7 +8,7 @@
 #
 #       Creation Date : Mon 08 Apr 2019 07:00:40 PM EEST (19:00)
 #
-#       Last Modified : Tue 07 May 2019 12:37:20 PM EEST (12:37)
+#       Last Modified : Tue 07 May 2019 01:44:15 PM EEST (13:44)
 #
 # ==============================================================================
 
@@ -36,7 +36,7 @@ setup(
     license="BSD 3-Clause License",
     packages=find_packages(exclude=("tests",)),
     include_package_data=True,
-    install_requires=["setuptools", "tqdm", "Django"],
+    install_requires=["setuptools", "tqdm", "Django", "requests"],
     zip_safe=False,
     classifiers=[
         "Development Status :: 3 - Alpha",
