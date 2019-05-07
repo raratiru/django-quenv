@@ -8,7 +8,7 @@
 #
 #       Creation Date : Mon 08 Apr 2019 07:00:40 PM EEST (19:00)
 #
-#       Last Modified : Tue 07 May 2019 01:44:15 PM EEST (13:44)
+#       Last Modified : Tue 07 May 2019 03:40:30 PM EEST (15:40)
 #
 # ==============================================================================
 
@@ -22,7 +22,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name="django-quenv",
-    version="0.1.2",
+    version="0.1.3",
     python_requires=">=3.5",
     description=(
         "A django application that gathers the names of all installed packages "
