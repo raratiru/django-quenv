@@ -43,10 +43,7 @@ class DateManager(models.Manager):
 
 class IncrementalChangesManager(models.Manager):
     def get_by_natural_key(self, package_key, date_key):
-        return self.get(
-            package_key=package_key,
-            date_key=date_key,
-        )
+        return self.get(package_key=package_key, date_key=date_key)
 
 
 class InfoManager(models.Manager):

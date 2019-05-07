@@ -18,13 +18,21 @@ from quenv.licenses import Dump
 
 
 class Command(BaseCommand):
-    help = _('Scans the active python environment for installed packages, reports their licenses and quality')
+    help = _(
+        "Scans the active python environment for installed packages, reports their licenses and quality"
+    )
 
     def handle(self, *args, **options):
         obj = Dump()
         try:
             obj.dump()
         except FileExistsError:
-            raise CommandError(_('Quenv operates only once per day. A fixture for today already exists.'))
+            raise CommandError(
+                _(
+                    "Quenv operates only once per day. A fixture for today already exists."
+                )
+            )
 
-        self.stdout.write(self.style.SUCCESS(_('Successfully creted all quenv fixtures')))
+        self.stdout.write(
+            self.style.SUCCESS(_("Successfully creted all quenv fixtures"))
+        )
