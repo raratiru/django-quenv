@@ -14,5 +14,6 @@
 
 from django.apps import AppConfig
 
+
 class QuenvConfig(AppConfig):
-    name = 'quenv'
+    name = "quenv"
