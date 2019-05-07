@@ -1,3 +1,5 @@
+**In Alpha phase, no tests exist and changes are possible to occur.**
+
 Django Quality Environment Report
 =================================
 
@@ -17,7 +19,6 @@ Only one fixture per day can be created.
 Finally, it creates a report of any change occurred to a package, namely:
 If it was **added**, **removed** or its **license** has **changed.**
 
-It is still in Alpha phase, no tests exist and changes are possible to occur.
 
 Installation
 ------------
