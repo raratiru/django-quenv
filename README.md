@@ -3,6 +3,8 @@
 Django Quality Environment Report
 =================================
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6e68470878d84d79b54f95a6831459a4)](https://app.codacy.com/app/raratiru/django-quenv?utm_source=github.com&utm_medium=referral&utm_content=raratiru/django-quenv&utm_campaign=Badge_Grade_Settings)
+
 This app uses setuptools to gather the names of all packages in a virtualenv.
 
 
