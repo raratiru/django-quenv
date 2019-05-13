@@ -34,5 +34,5 @@ class Command(BaseCommand):
             )
 
         self.stdout.write(
-            self.style.SUCCESS(_("Successfully creted all quenv fixtures"))
+            self.style.SUCCESS(_("Successfully created all quenv fixtures"))
         )
