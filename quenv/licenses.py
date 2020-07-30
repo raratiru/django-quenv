@@ -74,7 +74,11 @@ class Package:
         Check if a github url is present in order to query the lgtm api.
         It is possible to extend the reasons for starting a lgtm query.
         """
-        url = urlparse(line[line.find("https://") :])
+        try:
+            url = urlparse(line[line.find("https://") :])
+        except ValueError:
+            return self.get_lgtm_result(None)
+
         whitelist = ("github.com",)
         if all(
             (
@@ -107,7 +111,7 @@ class Package:
     def get_pkg_details(self):
         try:
             lines = self.pkg.get_metadata_lines("METADATA")
-        except OSError:
+        except (OSError, KeyError):
             lines = self.pkg.get_metadata_lines("PKG-INFO")
         return map(self.filters, lines)
 
@@ -119,7 +123,10 @@ class Package:
             lgtm.update(each["lgtm"])
             classifiers.extend(filter(None, each["licenses"]))
 
-        self.result.description_license = classifiers.pop(0)
+        try:
+            self.result.description_license = classifiers.pop(0)
+        except IndexError:
+            pass
         self.result.classifier_licenses = classifiers
         self.result.lgtm = lgtm
         return self.result
