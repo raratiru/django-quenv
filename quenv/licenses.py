@@ -74,7 +74,11 @@ class Package:
         Check if a github url is present in order to query the lgtm api.
         It is possible to extend the reasons for starting a lgtm query.
         """
-        url = urlparse(line[line.find("https://") :])
+        try:
+            url = urlparse(line[line.find("https://") :])
+        except ValueError:
+            return self.get_lgtm_result(None)
+
         whitelist = ("github.com",)
         if all(
             (
