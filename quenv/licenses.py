@@ -107,7 +107,7 @@ class Package:
     def get_pkg_details(self):
         try:
             lines = self.pkg.get_metadata_lines("METADATA")
-        except OSError:
+        except (OSError, KeyError):
             lines = self.pkg.get_metadata_lines("PKG-INFO")
         return map(self.filters, lines)
 
