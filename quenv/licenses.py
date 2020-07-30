@@ -119,7 +119,10 @@ class Package:
             lgtm.update(each["lgtm"])
             classifiers.extend(filter(None, each["licenses"]))
 
-        self.result.description_license = classifiers.pop(0)
+        try:
+            self.result.description_license = classifiers.pop(0)
+        except IndexError:
+            pass
         self.result.classifier_licenses = classifiers
         self.result.lgtm = lgtm
         return self.result
