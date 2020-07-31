@@ -8,7 +8,7 @@
 #
 #       Creation Date : Sat 20 Apr 2019 08:39:37 PM EEST (20:39)
 #
-#       Last Modified : Mon 06 May 2019 08:46:20 PM EEST (20:46)
+#       Last Modified : Fri 31 Jul 2020 10:47:11 PM EEST (22:47)
 #
 # ==============================================================================
 
@@ -19,7 +19,7 @@ from quenv import managers
 
 class License(models.Model):
     license_name = models.CharField(
-        verbose_name=_("License Name"), max_length=63, unique=True
+        verbose_name=_("License Name"), max_length=127, unique=True
     )
 
     objects = managers.LicenseManager()
@@ -37,7 +37,7 @@ class License(models.Model):
 
 class Package(models.Model):
     package_name = models.CharField(
-        verbose_name=_("Package Name"), max_length=31, unique=True
+        verbose_name=_("Package Name"), max_length=63, unique=True
     )
 
     objects = managers.PackageManager()
@@ -55,7 +55,7 @@ class Package(models.Model):
 
 class Environment(models.Model):
     environment_name = models.CharField(
-        verbose_name=_("Environment Name"), max_length=31, unique=True
+        verbose_name=_("Environment Name"), max_length=63, unique=True
     )
 
     objects = managers.EnvironmentManager()
