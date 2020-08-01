@@ -8,7 +8,7 @@
 #
 #       Creation Date : Sat 20 Apr 2019 08:39:37 PM EEST (20:39)
 #
-#       Last Modified : Sat 01 Aug 2020 06:39:34 PM EEST (18:39)
+#       Last Modified : Sat 01 Aug 2020 10:56:41 PM EEST (22:56)
 #
 # ==============================================================================
 
@@ -173,47 +173,47 @@ class InfoAdmin(admin.ModelAdmin):
 #         return False
 
 
-@admin.register(models.Date)
-class DateAdmin(admin.ModelAdmin):
-    list_display = ("check_date", "packages_link", "changes_link")
-
-    @staticmethod
-    def packages_link(obj):
-        url = reverse("admin:quenv_info_changelist")
-        return format_html(
-            "<a href={0}?date_key__check_date__day={1}&date_key__check_date__month={2}&date_key__check_date__year={3}>Related Packages</a>",
-            url,
-            obj.check_date.day,
-            obj.check_date.month,
-            obj.check_date.year,
-        )
-
-    packages_link.short_description = _("Related Packages")
-
-    @staticmethod
-    def changes_link(obj):
-        url = reverse("admin:quenv_incrementalchanges_changelist")
-        return format_html(
-            "<a href={0}?date_key__check_date__day={1}&date_key__check_date__month={2}&date_key__check_date__year={3}>Related Changes</a>",
-            url,
-            obj.check_date.day,
-            obj.check_date.month,
-            obj.check_date.year,
-        )
-
-    changes_link.short_description = _("Related Changes")
-
-    @staticmethod
-    def has_add_permission(request):
-        return False
-
-    @staticmethod
-    def has_change_permission(request, obj=None):
-        return False
-
-    @staticmethod
-    def has_delete_permission(request, obj=None):
-        return False
+# @admin.register(models.Date)
+# class DateAdmin(admin.ModelAdmin):
+#     list_display = ("check_date", "packages_link", "changes_link")
+#
+#     @staticmethod
+#     def packages_link(obj):
+#         url = reverse("admin:quenv_info_changelist")
+#         return format_html(
+#             "<a href={0}?date_key__check_date__day={1}&date_key__check_date__month={2}&date_key__check_date__year={3}>Related Packages</a>",
+#             url,
+#             obj.check_date.day,
+#             obj.check_date.month,
+#             obj.check_date.year,
+#         )
+#
+#     packages_link.short_description = _("Related Packages")
+#
+#     @staticmethod
+#     def changes_link(obj):
+#         url = reverse("admin:quenv_incrementalchanges_changelist")
+#         return format_html(
+#             "<a href={0}?date_key__check_date__day={1}&date_key__check_date__month={2}&date_key__check_date__year={3}>Related Changes</a>",
+#             url,
+#             obj.check_date.day,
+#             obj.check_date.month,
+#             obj.check_date.year,
+#         )
+#
+#     changes_link.short_description = _("Related Changes")
+#
+#     @staticmethod
+#     def has_add_permission(request):
+#         return False
+#
+#     @staticmethod
+#     def has_change_permission(request, obj=None):
+#         return False
+#
+#     @staticmethod
+#     def has_delete_permission(request, obj=None):
+#         return False
 
 
 # @admin.register(models.Grade)
