@@ -8,7 +8,7 @@
 #
 #       Creation Date : Sun 21 Apr 2019 01:18:22 PM EEST (13:18)
 #
-#       Last Modified : Tue 07 May 2019 04:00:36 PM EEST (16:00)
+#       Last Modified : Sun 02 Aug 2020 12:44:27 AM EEST (00:44)
 #
 # ==============================================================================
 
@@ -164,14 +164,14 @@ class Dump:
     def get_license_obj(license_name):
         return {
             "model": "quenv.license",
-            "fields": {"license_name": str(license_name).strip()},
+            "fields": {"license_name": str(license_name).strip()[:120]},
         }
 
     @staticmethod
     def get_package_obj(package):
         return {
             "model": "quenv.package",
-            "fields": {"package_name": str(package).strip()},
+            "fields": {"package_name": str(package).strip()[:60]},
         }
 
     @staticmethod

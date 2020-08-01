@@ -8,7 +8,7 @@
 #
 #       Creation Date : Sat 20 Apr 2019 08:39:37 PM EEST (20:39)
 #
-#       Last Modified : Fri 31 Jul 2020 10:47:11 PM EEST (22:47)
+#       Last Modified : Sat 01 Aug 2020 10:10:24 PM EEST (22:10)
 #
 # ==============================================================================
 
@@ -100,8 +100,8 @@ class Date(models.Model):
         return "{0}".format(self.check_date.strftime("%Y-%m-%d"))
 
     class Meta:
-        verbose_name = _("Check Date")
-        verbose_name_plural = _("Check Dates")
+        verbose_name = _("View by Date")
+        verbose_name_plural = _("View by Date")
 
 
 class Info(models.Model):
@@ -141,8 +141,8 @@ class Info(models.Model):
     natural_key.dependencies = ["quenv.environment", "quenv.package", "quenv.date"]
 
     class Meta:
-        verbose_name = _("Installation Info")
-        verbose_name_plural = _("Installation Info")
+        verbose_name = _("Panorama")
+        verbose_name_plural = _("Panorama")
 
 
 class IncrementalChanges(models.Model):
@@ -167,5 +167,5 @@ class IncrementalChanges(models.Model):
     natural_key.dependencies = ["quenv.package", "quenv.date"]
 
     class Meta:
-        verbose_name = _("Incremental Changes")
-        verbose_name_plural = _("Incremental Changes")
+        verbose_name = _("View Changes")
+        verbose_name_plural = _("View Changes")
