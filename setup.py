@@ -8,7 +8,7 @@
 #
 #       Creation Date : Mon 08 Apr 2019 07:00:40 PM EEST (19:00)
 #
-#       Last Modified : Sun 02 Aug 2020 12:52:09 AM EEST (00:52)
+#       Last Modified : Wed 05 Aug 2020 09:17:51 PM EEST (21:17)
 #
 # ==============================================================================
 
@@ -22,12 +22,12 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name="django-quenv",
-    version="0.1.6",
+    version="1.0.0",
     python_requires=">=3.5",
     description=(
-        "A django application that gathers the names of all installed packages "
-        "in a virtualenv, their licenses along with related quality metrics, "
-        "in django-admin."
+        "An spdx.dev based django application that enables the user to tidy up "
+        "the licenses of the python packages installed in the virtualenvs that "
+        "use the relevant code base."
     ),
     long_description=README,
     long_description_content_type="text/markdown",
