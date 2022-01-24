@@ -5,12 +5,12 @@ from django.db import models
 
 
 class ScanDateManager(models.Manager):
-    def get_by_natural_key(self, datetime):
-        return self.get(datetime=datetime)
+    def get_by_natural_key(self, start_timestamp):
+        return self.get(start_timestamp=start_timestamp)
 
 
 class ScanDate(models.Model):
-    datetime = models.DateTimeField(auto_created=True)
+    start_timestamp = models.DateTimeField(auto_created=True)
     has_errors = models.BooleanField()
     licenses_keys = models.ManyToManyField("License", through="Licenses")
     copyright_holders_keys = models.ManyToManyField("Holder", through="CopyrightHolder")
@@ -19,10 +19,14 @@ class ScanDate(models.Model):
     objects = ScanDateManager()
 
     def natural_key(self):
-        return (self.datetime,)
+        return (self.start_timestamp,)
 
     def __str__(self):
-        return f"{self.datetime}" if not self.has_errors else f"{self.datetime} [XXX]"
+        return (
+            f"{self.start_timestamp}"
+            if not self.has_errors
+            else f"{self.start_timestamp} [XXX]"
+        )
 
 
 class LicenseCategoryManager(models.Manager):

@@ -125,3 +125,46 @@
 ]
 
 """
+
+from pydantic import BaseModel, root_validator
+
+from quenv.djantic import LicenseCategorySchema, LicenseSchema, ScanDateSchema
+
+
+class LicensePreparation(BaseModel):
+    '''
+    Prints a list of licenses for each file
+    How will we go on?
+    {
+        'licenses': [
+            {
+                'spdx_license_key': 'SMLNJ',
+                'spdx_url': 'https://spdx.org/licenses/SMLNJ',
+                'category_key': ['Permissive']
+            },
+            {
+                'spdx_license_key': 'SMLNJ',
+                'spdx_url': 'https://spdx.org/licenses/SMLNJ',
+                'category_key': ['Permissive']
+            }
+        ]
+    }
+    '''
+    licenses: list[LicenseSchema]
+
+# class ScanDatePreparation(BaseModel):
+#     model: str = "quenv.ScanDate"
+#     fields: dict[ScanDateSchema]
+#
+#
+# class LicenseCategoryPreparation(BaseModel):
+#     model: str = "quenv.licensecategory"
+#     fields: dict[LicenseCategorySchema]
+#
+# class Deserializer(BaseModel):
+#     # scandate: list[ScanDatePreparation]
+#     # license_category: list[LicenseCategoryPreparation]
+#     result: list
+#     @root_validator
+#     def make_id(cls, values):
+#         breakpoint()
