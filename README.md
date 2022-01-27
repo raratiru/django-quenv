@@ -4,7 +4,4 @@
 
 Helps the process of license housekeeping in a Django project, the spdx way.
 
-Inspired by:
-* [spdx API](https://spdx.org/licenses/licenses.json)
-* [pip-licenses](https://github.com/raimon49/pip-licenses)
-* [yalm-python](https://github.com/spdx/yalm-python)
+Parses the output of [scancode](https://github.com/nexB/scancode-toolkit) and populates the data into a django database.
