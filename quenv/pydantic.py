@@ -126,45 +126,79 @@
 
 """
 
-from pydantic import BaseModel, root_validator
+from typing import Dict
+from pydantic import BaseModel, Field, root_validator, validator
 
 from quenv.djantic import LicenseCategorySchema, LicenseSchema, ScanDateSchema
 
 
 class LicensePreparation(BaseModel):
+    model: str = "quenv.licenses"
+    fields: LicenseSchema
+
+
+class LicensesPerFile(BaseModel):
     '''
-    Prints a list of licenses for each file
-    How will we go on?
+    one_file_licenses = data["files"][5818]
+    f = LicensesPerFile(**licenses)
+    f.dict()
+    prints:
     {
-        'licenses': [
+        "licenses": [
             {
-                'spdx_license_key': 'SMLNJ',
-                'spdx_url': 'https://spdx.org/licenses/SMLNJ',
-                'category_key': ['Permissive']
+                "model": "quenv.licenses",
+                "fields": {
+                    "spdx_license_key": "GPL-1.0-or-later",
+                    "spdx_url": "https://spdx.org/licenses/GPL-1.0-or-later",
+                    "category_key": ["Copyleft"],
+                },
             },
             {
-                'spdx_license_key': 'SMLNJ',
-                'spdx_url': 'https://spdx.org/licenses/SMLNJ',
-                'category_key': ['Permissive']
-            }
+                "model": "quenv.licenses",
+                "fields": {
+                    "spdx_license_key": "GPL-1.0-or-later",
+                    "spdx_url": "https://spdx.org/licenses/GPL-1.0-or-later",
+                    "category_key": ["Copyleft"],
+                },
+            },
         ]
     }
     '''
-    licenses: list[LicenseSchema]
+    licenses: list[LicensePreparation]
 
-# class ScanDatePreparation(BaseModel):
-#     model: str = "quenv.ScanDate"
-#     fields: dict[ScanDateSchema]
-#
-#
-# class LicenseCategoryPreparation(BaseModel):
-#     model: str = "quenv.licensecategory"
-#     fields: dict[LicenseCategorySchema]
-#
-# class Deserializer(BaseModel):
-#     # scandate: list[ScanDatePreparation]
-#     # license_category: list[LicenseCategoryPreparation]
-#     result: list
-#     @root_validator
-#     def make_id(cls, values):
-#         breakpoint()
+    @validator("licenses", pre=True)
+    def prepare_licenses(cls, v):
+        return [LicensePreparation(fields=each) for each in v]
+
+
+class AllAround(BaseModel):
+    '''
+    dict() returns:
+    {
+        "files": [
+            {
+                "model": "quenv.licenses",
+                "fields": {
+                    "spdx_license_key": "MIT-CMU",
+                    "spdx_url": "https://spdx.org/licenses/MIT-CMU",
+                    "category_key": [
+                        "Permissive"
+                    ]
+                }
+            },
+            {
+                ...
+            },
+        ]
+    }
+
+    '''
+    files: list
+
+    @validator("files", pre=True)
+    def prepare_licenses(cls, v):
+        # Here, extend the data that will build the fixture
+        licenses = []
+        for each in v:
+            licenses.extend(LicensesPerFile(**each).licenses)
+        return licenses
